@@ -3,7 +3,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
-#include "calculator.hpp"
+#include "calculator.hpp" // Include the header with all functions
 
 int main(int argc, char *argv[]) {
     if (argc != 2) {
@@ -24,14 +24,21 @@ int main(int argc, char *argv[]) {
 
     while (std::getline(inputFile, line)) {
         // Trim leading/trailing whitespace (optional but good practice)
-        line.erase(0, line.find_first_not_of(" \t\n\r\f\v"));
-        line.erase(line.find_last_not_of(" \t\n\r\f\v") + 1);
+        size_t start = line.find_first_not_of(" \t\n\r\f\v");
+        if (start == std::string::npos) { // Line is all whitespace
+             continue;
+        }
+        size_t end = line.find_last_not_of(" \t\n\r\f\v");
+        line = line.substr(start, end - start + 1);
+
 
         if (line.empty()) {
-            continue; // Skip empty lines
+            continue; // Skip empty lines after trimming
         }
 
+        // Use the validation function required by the main task
         if (isValidDouble(line)) {
+            // Use the string addition function required by the main task
             std::string sum = addStrings(line, numberToAdd);
             std::cout << line << " + " << numberToAdd << " = " << sum << std::endl;
         } else {
